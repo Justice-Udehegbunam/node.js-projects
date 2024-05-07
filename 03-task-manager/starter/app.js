@@ -17,7 +17,7 @@ app.use("/api/v1/tasks", tasks);
 
 const start = async () => {
   try {
-    await connectDB(process.env.MONGODB_URL);
+    await connectDB(process.env.MONGODB_URL, "Task-Manager");
     // THIS FETCHES AND PROCESSES THE PASSWORD FOR THE STORED ENV VARIABLE
     app.listen(port, () => {
       console.log(`App started on port ${port}...`);
