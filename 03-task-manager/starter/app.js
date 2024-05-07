@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const tasks = require("./routes/tasks");
+const connectDB = require("./db/connect");
+require("dotenv").config();
 
 const port = 3000;
 
@@ -13,6 +15,16 @@ app.get("/hello", (req, res) => {
 
 app.use("/api/v1/tasks", tasks);
 
-app.listen(port, () => {
-  console.log(`App started on port ${port}...`);
-});
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGODB_URL);
+    // THIS FETCHES AND PROCESSES THE PASSWORD FOR THE STORED ENV VARIABLE
+    app.listen(port, () => {
+      console.log(`App started on port ${port}...`);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+start();
