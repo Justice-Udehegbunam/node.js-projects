@@ -1,7 +1,20 @@
 const mongoose = require("mongoose");
 
-const TaskSchema = new mongoose.Schema({ name: String, completed: Boolean });
+const TaskSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "Must provide a name"], // alternatively u can just set the value to true but the setup just allows u to tell the user whats wrong in the message
+    trim: true,
+    maxlength: [20, "Name  cannot be more than 20 characters!"],
+  },
+  completed: {
+    type: Boolean,
+    default: false,
+  },
+});
 // when u set  the name to be "String" it creates a string constructor that automatically tries to construct whatever we have there into a string same as boolean
+
+/* "{ name: String, completed: Boolean }" this is the basic one that sets the basically what values to use but in this set-up there is no sort of validation */
 
 // MOVING TO ADD VALIDATION TO SCHEMA NEXT
 
