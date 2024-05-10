@@ -34,12 +34,25 @@ const getTask = async (req, res) => {
   }
 };
 
-const updateTask = (req, res) => {
-  res.send("update task ");
+const deleteTask = async (req, res) => {
+  try {
+    const { id: taskID } = req.params;
+    const task = await Task.findByIdAndDelete({ _id: taskID });
+    if (!task) {
+      return res.status(404).json({ msg: `Not task with this id: ${taskID}` });
+    }
+    res.status(200).json(task);
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
 };
 
-const deleteTask = (req, res) => {
-  res.send("delete task ");
+const updateTask = async (req, res) => {
+  // NOTE: The best method to  use for this case is a PATCH method cos u are just partially updating the data but if you are replacing the data entirely you should use a PUT request
+  try {
+    const { id: taskID } = req.params;
+    res.status(200).json({ id: taskID, data: req.body });
+  } catch (error) {}
 };
 
 module.exports = {
