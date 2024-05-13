@@ -1,4 +1,5 @@
 const Task = require("../models/task");
+const mongoose = require("mongoose");
 
 const getAllTasks = async (req, res) => {
   try {
@@ -48,11 +49,31 @@ const deleteTask = async (req, res) => {
 };
 
 const updateTask = async (req, res) => {
-  // NOTE: The best method to  use for this case is a PATCH method cos u are just partially updating the data but if you are replacing the data entirely you should use a PUT request
   try {
     const { id: taskID } = req.params;
-    res.status(200).json({ id: taskID, data: req.body });
-  } catch (error) {}
+    console.log({ ID: taskID });
+
+    // Convert the taskID string to an ObjectId
+    const objectId = mongoose.Types.ObjectId(taskID);
+
+    // atomic operators to ensure that the Find one and update function works
+    const updateObj = {
+      $set: {
+        name: req.body.name,
+        completed: req.body.Completed,
+      },
+    };
+
+    const task = await Task.collection.findOne({ _id: objectId });
+    if (!task) {
+      res.status(404).json({ msg: `Not task with this id: ${objectId}` });
+    } else {
+      await Task.collection.updateOne({ _id: objectId }, updateObj);
+      res.status(200).json({ msg: `Task updated successfully` });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
 };
 
 module.exports = {
