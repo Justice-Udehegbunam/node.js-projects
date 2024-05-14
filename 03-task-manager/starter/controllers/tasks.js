@@ -51,7 +51,7 @@ const deleteTask = async (req, res) => {
 const updateTask = async (req, res) => {
   try {
     const { id: taskID } = req.params;
-    console.log({ ID: taskID });
+    //console.log({ ID: taskID });
 
     // Convert the taskID string to an ObjectId
     const objectId = mongoose.Types.ObjectId(taskID);
@@ -60,7 +60,7 @@ const updateTask = async (req, res) => {
     const updateObj = {
       $set: {
         name: req.body.name,
-        completed: req.body.Completed,
+        completed: req.body.completed,
       },
     };
 
