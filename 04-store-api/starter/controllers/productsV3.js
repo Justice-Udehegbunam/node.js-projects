@@ -29,6 +29,11 @@ const getAllProducts = async (req, res) => {
     //   console.log(sort);
 
     const sortList = sort.split(",").join(" ");
+    /* Handling multiple sort fields: The sort variable is expected to contain a string of multiple   field names separated by commas (e.g., "name,price,createdAt"). The split() method splits this string into an array of individual field names.
+        Removing commas and adding spaces: The join(" ") method then joins the array elements back into a string, but this time with spaces instead of commas. This is necessary because Mongoose's sort() method expects a string with spaces separating the field names, not commas.
+        For example, if sort is "name,price", the code would convert it to "name price", which is the correct format for Mongoose's sort() method.
+        Without this line of code, the sort() method would not work correctly, and the results would not be sorted as intended. 
+      */
     results = results.sort(sortList);
   } else {
     results = results.sort("createdAt");
